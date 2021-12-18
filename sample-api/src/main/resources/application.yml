@@ -1,0 +1,40 @@
+spring:
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          "[time_zone]": UTC
+          
+  mail:
+    host: smtp.mailgun.org
+    port: 25
+    username: postmaster@mail.sample.com
+    password: password
+    
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+    
+  task:
+    execution:
+      pool:
+       core-size: 8
+       max-size: 16
+       
+logging:
+  file:
+    path: target/log
+       
+app:
+
+  app-title: Sample API
+  app-description: Sample API Description
+  app-version: 1.0.0
+
+  email-send: false
+
+  cors-allowed-origin: http://localhost:8080
+
+  jwt-secret: m4f7jEsJu+y2LI9BlZ0Gg4O9c/GVZQrjhl6ePPy8c3U=  
+  jwt-exp-short: 1800 # 30 minutes
+  jwt-exp-long: 2592000 # 1 month
