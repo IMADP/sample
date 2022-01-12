@@ -1,5 +1,9 @@
 package com.sample.api;
 
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -38,7 +42,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 @EnableCaching(mode = AdviceMode.ASPECTJ)
 @EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableConfigurationProperties(SampleApiProperties.class)
+@EnableConfigurationProperties
 @EnableLoadTimeWeaving(aspectjWeaving = AspectJWeaving.ENABLED)
 @EnableJpaRepositories(repositoryBaseClass = EntityRepositoryImpl.class, basePackages = SampleApi.BASE_PACKAGE)
 @Import(SampleApiSecurity.class)
@@ -74,6 +78,28 @@ public class SampleApi {
 				.select()
 				.apis(RequestHandlerSelectors.any())
 				.paths(PathSelectors.ant("/api/**"))
+				.build();
+	}
+
+	@Bean
+	public CloseableHttpClient closeableHttpClient() {
+		PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
+		connectionManager.setMaxTotal(400);
+		connectionManager.setDefaultMaxPerRoute(200);
+
+		RequestConfig requestConfig = RequestConfig
+				.custom()
+				.setConnectTimeout(60000)
+				.setConnectionRequestTimeout(60000)
+				.setSocketTimeout(60000)
+				.build();
+
+		return HttpClients
+				.custom()
+				.setDefaultRequestConfig(requestConfig)
+				.setConnectionManager(connectionManager)
+				.disableAutomaticRetries()
+				.disableCookieManagement()
 				.build();
 	}
 

@@ -31,10 +31,11 @@ app:
   app-description: Sample API Description
   app-version: 1.0.0
 
-  email-send: false
-
-  cors-allowed-origin: http://localhost:8080
-
   jwt-secret: m4f7jEsJu+y2LI9BlZ0Gg4O9c/GVZQrjhl6ePPy8c3U=  
   jwt-exp-short: 1800 # 30 minutes
   jwt-exp-long: 2592000 # 1 month
+
+  cors-allowed-origin: http://localhost:8080
+  
+email:
+  live: true
